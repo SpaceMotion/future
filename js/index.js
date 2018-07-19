@@ -1,40 +1,36 @@
-window.onload = () => {
-	ReactDOM.render(React.createElement(
-		'table',
-		null,
-		React.createElement(
-			'thead',
+class CustomTable extends React.Component {
+	constructor() {
+		super();
+		this.state = {
+			array: ['id', 'firstname', 'lastname', 'email', 'phone']
+		};
+	}
+
+	render() {
+		console.log(this);
+		return React.createElement(
+			'table',
 			null,
 			React.createElement(
-				'tr',
+				'thead',
 				null,
 				React.createElement(
-					'th',
+					'tr',
 					null,
-					'id'
-				),
-				React.createElement(
-					'th',
-					null,
-					'firstname'
-				),
-				React.createElement(
-					'th',
-					null,
-					'lastname'
-				),
-				React.createElement(
-					'th',
-					null,
-					'email'
-				),
-				React.createElement(
-					'th',
-					null,
-					'phone'
+					this.state.array.map(record => {
+						return React.createElement(
+							'th',
+							null,
+							record
+						);
+					})
 				)
-			)
-		),
-		React.createElement('tbody', null)
-	), document.querySelector('#app'));
+			),
+			React.createElement('tbody', null)
+		);
+	}
+}
+
+window.onload = () => {
+	ReactDOM.render(React.createElement(CustomTable, null), document.querySelector('#app'));
 };

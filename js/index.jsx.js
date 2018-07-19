@@ -1,19 +1,36 @@
-window.onload = () => {
-	ReactDOM.render(
-		<table>
-			<thead>
-				<tr>
-					<th>id</th>
-					<th>firstname</th>
-					<th>lastname</th>
-					<th>email</th>
-					<th>phone</th>
-				</tr>
-			</thead>
-			<tbody>
+class CustomTable extends React.Component {
+	constructor() {
+		super();
+		this.state = {
+			array: [
+				'id',
+				'firstname',
+				'lastname',
+				'email',
+				'phone'
+			]
+		};
+	}
 
-			</tbody>
-		</table>,
-		document.querySelector('#app')
-	);
+	render() {
+		console.log(this);
+		return (
+			<table>
+				<thead>
+					<tr>
+						{this.state.array.map((record) => {
+							return <th>{record}</th>;
+						})}
+					</tr>
+				</thead>
+				<tbody>
+
+				</tbody>
+			</table>
+		);
+	}
+}
+
+window.onload = () => {
+	ReactDOM.render(<CustomTable></CustomTable>, document.querySelector('#app'));
 };
