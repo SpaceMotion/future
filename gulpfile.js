@@ -1,29 +1,38 @@
 const gulp = require('gulp');
 const babel = require('gulp-babel');
 const rename = require('gulp-rename');
-const watch = require('gulp-watch');
-const browsersyncinstance = require('browser-sync').create();
 const browsersync = require('browser-sync');
+const browsersyncinstance = browsersync.create();
+const jsxpath = 'js/*.jsx.js';
+const htmlpath = '*.html';
 
 gulp.task('browsersync', () => {
-	return browsersyncinstance.init({
+	browsersyncinstance.init({
         server: {
             baseDir: "./"
         }
     });
 });
 
-gulp.task('jsxcompile', () => {
-	return gulp.src('*.jsx.js').pipe(babel({
+gulp.task('jsx', () => {
+	gulp.src(jsxpath).pipe(babel({
 		presets: ["react"]
 	})).pipe(rename((path) => {
 		path.basename = path.basename.replace('.jsx', '');
-	})).pipe(gulp.dest('./'));
-	browsersyncinstance.reload({stream: true});	
+	})).pipe(gulp.dest('./js')).pipe(browsersyncinstance.reload({
+		stream: true
+	}));
 });
 
-gulp.task('watchjsx', () => {
-	gulp.watch('*.jsx.js', ['jsxcompile']);
+gulp.task('html', () => {
+	gulp.src(htmlpath).pipe(gulp.dest('./')).pipe(browsersyncinstance.reload({
+		stream: true
+	}));
 });
 
-gulp.task('default', ['browsersync', 'watchjsx']);
+gulp.task('watchers', () => {
+	gulp.watch(jsxpath, ['jsx']);
+	gulp.watch(htmlpath, ['html']);
+});
+
+gulp.task('default', ['watchers', 'browsersync']);

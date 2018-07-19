@@ -1,0 +1,40 @@
+window.onload = () => {
+	ReactDOM.render(React.createElement(
+		'table',
+		null,
+		React.createElement(
+			'thead',
+			null,
+			React.createElement(
+				'tr',
+				null,
+				React.createElement(
+					'th',
+					null,
+					'id'
+				),
+				React.createElement(
+					'th',
+					null,
+					'firstname'
+				),
+				React.createElement(
+					'th',
+					null,
+					'lastname'
+				),
+				React.createElement(
+					'th',
+					null,
+					'email'
+				),
+				React.createElement(
+					'th',
+					null,
+					'phone'
+				)
+			)
+		),
+		React.createElement('tbody', null)
+	), document.querySelector('#app'));
+};
