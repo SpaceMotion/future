@@ -5,6 +5,7 @@ const browsersync = require('browser-sync');
 const browsersyncinstance = browsersync.create();
 const jsxpath = 'js/*.jsx.js';
 const htmlpath = '*.html';
+const csspath = '**/*.css';
 
 gulp.task('browsersync', () => {
 	browsersyncinstance.init({
@@ -24,15 +25,10 @@ gulp.task('jsx', () => {
 	}));
 });
 
-gulp.task('html', () => {
-	gulp.src(htmlpath).pipe(gulp.dest('./')).pipe(browsersyncinstance.reload({
-		stream: true
-	}));
-});
-
 gulp.task('watchers', () => {
 	gulp.watch(jsxpath, ['jsx']);
-	gulp.watch(htmlpath, ['html']);
+	gulp.watch(htmlpath).on('change', browsersyncinstance.reload);
+	gulp.watch(csspath).on('change', browsersyncinstance.reload);
 });
 
 gulp.task('default', ['watchers', 'browsersync']);
