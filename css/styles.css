@@ -1,2 +1,4 @@
+@import url(common.css);
+
 @import url(table/table.css);
 @import url(table/__cell/table__cell.css);

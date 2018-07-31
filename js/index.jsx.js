@@ -19,8 +19,8 @@ class CustomTable extends React.Component {
 				label: 'phone'
 			}],
 			data: [],
-			activePage: 5,
-			itemsPerPage: 50
+			activePage: 3,
+			itemsPerPage: 23
 
 		};
 
@@ -28,27 +28,35 @@ class CustomTable extends React.Component {
 			return response.json();
 		}).then((data) => {
 			this.setState({
-				data: data
+				data: data.sort((a, b) => {
+					return a.firstName.localeCompare(b.firstName);
+				})
 			});			
 		});
 	}
 
 	render() {
 		return (
-			<table className='table'>
-				<thead className='table__header'>
-					<tr className='table__row'>
-						{this.state.headers.map((header, index) => {
-							return <th className='table__cell' key={index}>{header.label}</th>;
-						})}
-					</tr>
-				</thead>
-				<tbody className='table__body'>
-					{this.state.data.map((item, index) => {
-						return <tr className='table__row' key={index}>{this.getItem(item)}</tr>;
-					}).slice(this.state.itemsPerPage * this.state.activePage, this.state.itemsPerPage * this.state.activePage + this.state.itemsPerPage)}
-				</tbody>
-			</table>
+			<div className='custom-table'>
+				<table className='table'>
+					<thead className='table__header'>
+						<tr className='table__row'>
+							{this.state.headers.map((header, index) => {
+								return <th onClick={this.sortByKey.bind(this)} data-key={header.key} className='table__cell' key={index}>{header.label}</th>;
+							})}
+						</tr>
+					</thead>
+					<tbody className='table__body'>
+						{this.state.data.map((item, index) => {
+							return <tr className='table__row' key={index}>{this.getItem(item)}</tr>;
+						}).slice(this.state.itemsPerPage * this.state.activePage, this.state.itemsPerPage * this.state.activePage + this.state.itemsPerPage)}
+					</tbody>
+				</table>
+				<div>
+					<span data-control-id='previousPage' onClick={this.controlHandler.bind(this)}>Previous Page</span>&nbsp;&nbsp;&nbsp;
+					<span data-control-id='nextPage' onClick={this.controlHandler.bind(this)}>Next Page</span>
+				</div>
+			</div>
 		);
 	}
 
@@ -56,6 +64,31 @@ class CustomTable extends React.Component {
 		return this.state.headers.map((header, index) => {
 			return <td className='table__cell' key={index}>{item[header.key]}</td>;
 		});
+	}
+
+	sortByKey(event) {
+		let key = event.target.dataset.key;
+		this.setState({
+			data: this.state.data.sort((a, b) => {
+				return a[key].localeCompare(b[key]);
+			})
+		});
+	}
+
+	controlHandler(event) {
+		switch (event.target.dataset.controlId) {
+			case 'previousPage':
+				this.setState(previousState => {
+					activePage: previousState.activePage--
+				});
+				break;
+			case 'nextPage':
+				this.setState(previousState => {
+					activePage: previousState.activePage++
+				});
+				break;
+		}
+		this.forceUpdate();
 	}
 }
 
